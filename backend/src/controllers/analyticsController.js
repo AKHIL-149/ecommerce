@@ -15,14 +15,14 @@ class AnalyticsController {
       }
 
       const salesQuery = `
-        SELECT 
+        SELECT
           DATE(created_at) as date,
           COUNT(*) as orders,
           SUM(total_amount) as revenue,
           AVG(total_amount) as avg_order_value,
           COUNT(DISTINCT customer_id) as unique_customers
-        FROM orders 
-        WHERE store_id = $1 
+        FROM orders
+        WHERE store_id = $1
           AND created_at BETWEEN $2 AND $3
           AND status != 'cancelled'
         GROUP BY DATE(created_at)
@@ -30,14 +30,25 @@ class AnalyticsController {
       `;
 
       const result = await query(salesQuery, [storeId, startDate, endDate]);
-      
+
+      // Get total unique customers across all dates
+      const totalUniqueQuery = `
+        SELECT COUNT(DISTINCT customer_id) as total_unique_customers
+        FROM orders
+        WHERE store_id = $1
+          AND created_at BETWEEN $2 AND $3
+          AND status != 'cancelled'
+      `;
+
+      const uniqueResult = await query(totalUniqueQuery, [storeId, startDate, endDate]);
+
       const totals = {
         totalRevenue: result.rows.reduce((sum, row) => sum + parseFloat(row.revenue || 0), 0),
         totalOrders: result.rows.reduce((sum, row) => sum + parseInt(row.orders || 0), 0),
         avgOrderValue: 0,
-        uniqueCustomers: new Set(result.rows.map(row => row.unique_customers)).size
+        uniqueCustomers: parseInt(uniqueResult.rows[0]?.total_unique_customers || 0)
       };
-      
+
       totals.avgOrderValue = totals.totalOrders > 0 ? totals.totalRevenue / totals.totalOrders : 0;
 
       data = {
@@ -205,10 +216,20 @@ class AnalyticsController {
       `;
 
       const result = await query(realTimeQuery, [storeId, lastHour, last24Hours]);
-      
+
+      // Get active visitors from page_views table (last 5 minutes)
+      const fiveMinutesAgo = now.clone().subtract(5, 'minutes').format();
+      const visitorsQuery = `
+        SELECT COUNT(DISTINCT session_id) as active_visitors
+        FROM page_views
+        WHERE store_id = $1 AND created_at >= $2
+      `;
+
+      const visitorsResult = await query(visitorsQuery, [storeId, fiveMinutesAgo]);
+
       const data = {
         ...result.rows[0],
-        active_visitors: Math.floor(Math.random() * 1000) + 500,
+        active_visitors: parseInt(visitorsResult.rows[0]?.active_visitors || 0),
         timestamp: now.toISOString()
       };
 
