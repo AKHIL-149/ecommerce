@@ -7,9 +7,13 @@ const morgan = require('morgan');
 const compression = require('compression');
 require('dotenv').config();
 
-const analyticsRoutes = require('./routes/analytics');
 const authRoutes = require('./routes/auth');
-const connectorsRoutes = require('./routes/connectors');
+const productsRoutes = require('./routes/products');
+const ordersRoutes = require('./routes/orders');
+const customersRoutes = require('./routes/customers');
+const storesRoutes = require('./routes/stores');
+const reportsRoutes = require('./routes/reports');
+const uploadRoutes = require('./routes/upload');
 const dashboardRoutes = require('./routes/dashboard');
 
 const app = express();
@@ -18,7 +22,7 @@ const PORT = process.env.PORT || 3001;
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: process.env.FRONTEND_URL || ['http://localhost:3000', 'http://localhost:3002'],
   credentials: true
 }));
 
@@ -44,10 +48,17 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Static files for uploads
+app.use('/uploads', express.static('uploads'));
+
 // API Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/analytics', analyticsRoutes);
-app.use('/api/connectors', connectorsRoutes);
+app.use('/api/products', productsRoutes);
+app.use('/api/orders', ordersRoutes);
+app.use('/api/customers', customersRoutes);
+app.use('/api/stores', storesRoutes);
+app.use('/api/reports', reportsRoutes);
+app.use('/api/upload', uploadRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
 // Error handling
@@ -66,8 +77,8 @@ app.use((req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`🚀 EcomAnalytics API running on port ${PORT}`);
-  console.log(`📊 Health check: http://localhost:${PORT}/health`);
+  console.log(`EcomInventory API running on port ${PORT}`);
+  console.log(`Health check: http://localhost:${PORT}/health`);
 });
 
 module.exports = app;
