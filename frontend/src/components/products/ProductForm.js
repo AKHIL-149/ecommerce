@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useStore } from '../../context/StoreContext';
-import { productsAPI } from '../../utils/api';
+import { productsAPI, categoriesAPI } from '../../utils/api';
 import Input from '../common/Input';
 import Button from '../common/Button';
 
@@ -11,6 +11,7 @@ const ProductForm = ({ product, onSuccess, onCancel }) => {
   const { currentStore } = useStore();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [categories, setCategories] = useState([]);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -19,11 +20,27 @@ const ProductForm = ({ product, onSuccess, onCancel }) => {
     description: '',
     price: '',
     cost: '',
-    category: '',
+    category_id: '',
     inventory_quantity: '',
     low_stock_threshold: '10',
     status: 'active'
   });
+
+  // Fetch categories when component mounts
+  useEffect(() => {
+    if (currentStore) {
+      fetchCategories();
+    }
+  }, [currentStore]);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await categoriesAPI.list({ storeId: currentStore.id });
+      setCategories(response.data.categories || []);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
 
   // If we're editing a product, populate the form with existing data
   useEffect(() => {
@@ -34,7 +51,7 @@ const ProductForm = ({ product, onSuccess, onCancel }) => {
         description: product.description || '',
         price: product.price || '',
         cost: product.cost || '',
-        category: product.category || '',
+        category_id: product.category_id || '',
         inventory_quantity: product.inventory_quantity || '',
         low_stock_threshold: product.low_stock_threshold || '10',
         status: product.status || 'active'
@@ -153,14 +170,28 @@ const ProductForm = ({ product, onSuccess, onCancel }) => {
           placeholder="Optional product code"
           error={errors.sku}
         />
-        <Input
-          label="Category"
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          placeholder="e.g., Electronics, Clothing"
-          error={errors.category}
-        />
+        <div>
+          <label htmlFor="category_id" className="block text-sm font-medium text-gray-700 mb-1">
+            Category
+          </label>
+          <select
+            id="category_id"
+            name="category_id"
+            value={formData.category_id}
+            onChange={handleChange}
+            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          >
+            <option value="">No Category</option>
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+          {errors.category_id && (
+            <p className="mt-1 text-sm text-red-600">{errors.category_id}</p>
+          )}
+        </div>
       </div>
 
       {/* Description */}

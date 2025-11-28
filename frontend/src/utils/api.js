@@ -107,6 +107,14 @@ export const inventoryAPI = {
   getHistory: (params) => api.get(`/stores/${params.storeId}/adjustments`, { params })
 };
 
+// Categories API calls
+export const categoriesAPI = {
+  list: (params) => api.get('/categories', { params }),
+  create: (data) => api.post('/categories', data),
+  update: (id, data) => api.put(`/categories/${id}`, data),
+  delete: (id) => api.delete(`/categories/${id}`)
+};
+
 // Reports API calls
 export const reportsAPI = {
   getSales: (params) => api.get('/reports/sales', { params }),

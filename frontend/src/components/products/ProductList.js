@@ -3,8 +3,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { useStore } from '../../context/StoreContext';
-import { productsAPI } from '../../utils/api';
+import { productsAPI, categoriesAPI } from '../../utils/api';
 import { formatCurrency } from '../../utils/helpers';
+import { exportToCSV, formatProductsForExport } from '../../utils/exportHelpers';
 import Button from '../common/Button';
 import Modal from '../common/Modal';
 import ProductForm from './ProductForm';
@@ -18,24 +19,47 @@ const ProductList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState({});
+  const [categories, setCategories] = useState([]);
+  const [categoryFilter, setCategoryFilter] = useState('');
 
   useEffect(() => {
     if (currentStore) {
       fetchProducts();
     }
-  }, [currentStore, page, searchTerm]);
+  }, [currentStore, page, searchTerm, categoryFilter]);
+
+  useEffect(() => {
+    if (currentStore) {
+      fetchCategories();
+    }
+  }, [currentStore]);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await categoriesAPI.list({ storeId: currentStore.id });
+      setCategories(response.data.categories || []);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
 
   const fetchProducts = async () => {
     if (!currentStore) return;
 
     setLoading(true);
     try {
-      const response = await productsAPI.list({
+      const params = {
         storeId: currentStore.id,
         page,
         limit: 20,
         search: searchTerm
-      });
+      };
+
+      if (categoryFilter) {
+        params.categoryId = categoryFilter;
+      }
+
+      const response = await productsAPI.list(params);
 
       setProducts(response.data.products);
       setPagination(response.data.pagination);
@@ -71,6 +95,16 @@ const ProductList = () => {
     }
   };
 
+  const handleExportCSV = () => {
+    if (products.length === 0) {
+      alert('No products to export');
+      return;
+    }
+
+    const formattedData = formatProductsForExport(products);
+    exportToCSV(formattedData, `products_${currentStore.name}`);
+  };
+
   if (!currentStore) {
     return (
       <div className="text-center py-12">
@@ -87,20 +121,42 @@ const ProductList = () => {
           <h1 className="text-2xl font-bold text-gray-900">Products</h1>
           <p className="text-sm text-gray-600 mt-1">Manage your product catalog and inventory</p>
         </div>
-        <Button onClick={() => setShowAddModal(true)}>
-          Add Product
-        </Button>
+        <div className="flex space-x-3">
+          <Button variant="outline" onClick={handleExportCSV}>
+            Export CSV
+          </Button>
+          <Button onClick={() => setShowAddModal(true)}>
+            Add Product
+          </Button>
+        </div>
       </div>
 
       {/* Search and filters */}
       <div className="bg-white shadow rounded-lg p-4">
-        <input
-          type="text"
-          placeholder="Search products by name or SKU..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full md:w-96 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+        <div className="flex flex-col md:flex-row gap-4">
+          <input
+            type="text"
+            placeholder="Search products by name or SKU..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="flex-1 md:w-96 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <select
+            value={categoryFilter}
+            onChange={(e) => {
+              setCategoryFilter(e.target.value);
+              setPage(1);
+            }}
+            className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">All Categories</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {/* Products table */}

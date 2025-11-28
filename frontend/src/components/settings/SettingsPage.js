@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useStore } from '../../context/StoreContext';
-import { storesAPI, authAPI } from '../../utils/api';
+import { storesAPI, authAPI, categoriesAPI } from '../../utils/api';
 import Input from '../common/Input';
 import Button from '../common/Button';
 
@@ -37,6 +37,16 @@ const SettingsPage = () => {
     confirm_password: ''
   });
 
+  // Categories management
+  const [categories, setCategories] = useState([]);
+  const [categoryForm, setCategoryForm] = useState({
+    id: null,
+    name: '',
+    description: '',
+    color: '#3B82F6'
+  });
+  const [editingCategory, setEditingCategory] = useState(null);
+
   // Load current store settings
   useEffect(() => {
     if (currentStore) {
@@ -58,6 +68,22 @@ const SettingsPage = () => {
       });
     }
   }, [user]);
+
+  // Load categories when tab is active and store is selected
+  useEffect(() => {
+    if (currentStore && activeTab === 'categories') {
+      fetchCategories();
+    }
+  }, [currentStore, activeTab]);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await categoriesAPI.list({ storeId: currentStore.id });
+      setCategories(response.data.categories || []);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
 
   const handleStoreFormChange = (e) => {
     const { name, value } = e.target;
@@ -191,6 +217,95 @@ const SettingsPage = () => {
     }
   };
 
+  const handleCategoryFormChange = (e) => {
+    const { name, value } = e.target;
+    setCategoryForm(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const handleSaveCategory = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setErrors({});
+    setSuccessMessage('');
+
+    try {
+      if (editingCategory) {
+        // Update existing category
+        await categoriesAPI.update(editingCategory.id, {
+          name: categoryForm.name,
+          description: categoryForm.description,
+          color: categoryForm.color
+        });
+        setSuccessMessage('Category updated successfully');
+      } else {
+        // Create new category
+        await categoriesAPI.create({
+          store_id: currentStore.id,
+          name: categoryForm.name,
+          description: categoryForm.description,
+          color: categoryForm.color
+        });
+        setSuccessMessage('Category created successfully');
+      }
+
+      // Reset form and refresh list
+      setCategoryForm({ id: null, name: '', description: '', color: '#3B82F6' });
+      setEditingCategory(null);
+      fetchCategories();
+
+      // Clear success message after 3 seconds
+      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (error) {
+      console.error('Error saving category:', error);
+      if (error.response?.data?.error) {
+        alert(error.response.data.error);
+      } else {
+        alert('Failed to save category');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEditCategory = (category) => {
+    setEditingCategory(category);
+    setCategoryForm({
+      id: category.id,
+      name: category.name,
+      description: category.description || '',
+      color: category.color || '#3B82F6'
+    });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingCategory(null);
+    setCategoryForm({ id: null, name: '', description: '', color: '#3B82F6' });
+  };
+
+  const handleDeleteCategory = async (category) => {
+    if (!window.confirm(`Are you sure you want to delete "${category.name}"? Products in this category will become uncategorized.`)) {
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await categoriesAPI.delete(category.id);
+      setSuccessMessage('Category deleted successfully');
+      fetchCategories();
+
+      // Clear success message after 3 seconds
+      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (error) {
+      console.error('Error deleting category:', error);
+      alert('Failed to delete category');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -238,6 +353,16 @@ const SettingsPage = () => {
             }`}
           >
             Change Password
+          </button>
+          <button
+            onClick={() => setActiveTab('categories')}
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'categories'
+                ? 'border-blue-500 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            Categories
           </button>
         </nav>
       </div>
@@ -397,6 +522,119 @@ const SettingsPage = () => {
               </Button>
             </div>
           </form>
+        </div>
+      )}
+
+      {/* Categories Tab */}
+      {activeTab === 'categories' && currentStore && (
+        <div className="space-y-6">
+          {/* Category Form */}
+          <div className="bg-white shadow rounded-lg p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              {editingCategory ? 'Edit Category' : 'Add New Category'}
+            </h2>
+            <form onSubmit={handleSaveCategory} className="space-y-4">
+              <Input
+                label="Category Name"
+                name="name"
+                value={categoryForm.name}
+                onChange={handleCategoryFormChange}
+                placeholder="e.g., Electronics, Clothing, Food"
+                error={errors.name}
+                required
+              />
+
+              <div>
+                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  value={categoryForm.description}
+                  onChange={handleCategoryFormChange}
+                  placeholder="Optional description for this category"
+                  rows={3}
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="color" className="block text-sm font-medium text-gray-700 mb-1">
+                  Color
+                </label>
+                <div className="flex items-center space-x-3">
+                  <input
+                    id="color"
+                    name="color"
+                    type="color"
+                    value={categoryForm.color}
+                    onChange={handleCategoryFormChange}
+                    className="h-10 w-20 border border-gray-300 rounded cursor-pointer"
+                  />
+                  <span className="text-sm text-gray-600">{categoryForm.color}</span>
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-3 pt-4">
+                {editingCategory && (
+                  <Button type="button" variant="outline" onClick={handleCancelEdit}>
+                    Cancel
+                  </Button>
+                )}
+                <Button type="submit" disabled={loading}>
+                  {loading ? 'Saving...' : (editingCategory ? 'Update Category' : 'Add Category')}
+                </Button>
+              </div>
+            </form>
+          </div>
+
+          {/* Categories List */}
+          <div className="bg-white shadow rounded-lg p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Your Categories</h2>
+            {categories.length === 0 ? (
+              <p className="text-gray-500 text-center py-8">
+                No categories yet. Create your first category above.
+              </p>
+            ) : (
+              <div className="space-y-3">
+                {categories.map((category) => (
+                  <div
+                    key={category.id}
+                    className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-gray-300"
+                  >
+                    <div className="flex items-center space-x-4">
+                      <div
+                        className="w-8 h-8 rounded"
+                        style={{ backgroundColor: category.color }}
+                      />
+                      <div>
+                        <p className="font-medium text-gray-900">{category.name}</p>
+                        {category.description && (
+                          <p className="text-sm text-gray-500">{category.description}</p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => handleEditCategory(category)}
+                        className="px-3 py-1 text-sm text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDeleteCategory(category)}
+                        className="px-3 py-1 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 rounded"
+                        disabled={loading}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>
