@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useStore } from '../../context/StoreContext';
 import { productsAPI, inventoryAPI } from '../../utils/api';
 import { formatDate } from '../../utils/helpers';
+import { exportToCSV } from '../../utils/exportHelpers';
 import Button from '../common/Button';
 import Modal from '../common/Modal';
 import StockAdjustmentForm from './StockAdjustmentForm';
@@ -111,6 +112,45 @@ const InventoryList = () => {
     return 'In Stock';
   };
 
+  const handleExportInventoryCSV = () => {
+    if (products.length === 0) {
+      alert('No inventory data to export');
+      return;
+    }
+
+    const formattedData = products.map(product => ({
+      'Product Name': product.name,
+      'SKU': product.sku || '',
+      'Category': product.category || '',
+      'Stock Level': product.inventory_quantity,
+      'Low Stock Threshold': product.low_stock_threshold,
+      'Status': getStockLevelLabel(product),
+      'Price': product.price
+    }));
+
+    exportToCSV(formattedData, `inventory_${currentStore.name}`);
+  };
+
+  const handleExportAdjustmentsCSV = () => {
+    if (adjustments.length === 0) {
+      alert('No adjustment history to export');
+      return;
+    }
+
+    const formattedData = adjustments.map(adj => ({
+      'Date': formatDate(adj.created_at),
+      'Product': adj.product_name,
+      'Type': adj.adjustment_type,
+      'Quantity Change': adj.quantity_change,
+      'Old Quantity': adj.old_quantity,
+      'New Quantity': adj.new_quantity,
+      'Reason': adj.reason || '',
+      'Adjusted By': adj.adjusted_by_name
+    }));
+
+    exportToCSV(formattedData, `inventory_adjustments_${currentStore.name}`);
+  };
+
   if (!currentStore) {
     return (
       <div className="text-center py-12">
@@ -127,6 +167,12 @@ const InventoryList = () => {
           <h1 className="text-2xl font-bold text-gray-900">Inventory</h1>
           <p className="text-sm text-gray-600 mt-1">Track stock levels and manage inventory adjustments</p>
         </div>
+        <Button
+          variant="outline"
+          onClick={activeTab === 'products' ? handleExportInventoryCSV : handleExportAdjustmentsCSV}
+        >
+          Export CSV
+        </Button>
       </div>
 
       {/* Tabs */}

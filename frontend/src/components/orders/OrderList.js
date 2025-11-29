@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useStore } from '../../context/StoreContext';
 import { ordersAPI } from '../../utils/api';
 import { formatCurrency, formatDate } from '../../utils/helpers';
+import { exportToCSV, formatOrdersForExport } from '../../utils/exportHelpers';
 import Button from '../common/Button';
 import Modal from '../common/Modal';
 import OrderForm from './OrderForm';
@@ -21,12 +22,16 @@ const OrderList = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState({});
+  const [dateRange, setDateRange] = useState({
+    startDate: '',
+    endDate: ''
+  });
 
   useEffect(() => {
     if (currentStore) {
       fetchOrders();
     }
-  }, [currentStore, page, searchTerm, statusFilter]);
+  }, [currentStore, page, searchTerm, statusFilter, dateRange]);
 
   const fetchOrders = async () => {
     if (!currentStore) return;
@@ -45,6 +50,14 @@ const OrderList = () => {
 
       if (statusFilter !== 'all') {
         params.status = statusFilter;
+      }
+
+      if (dateRange.startDate) {
+        params.startDate = dateRange.startDate;
+      }
+
+      if (dateRange.endDate) {
+        params.endDate = dateRange.endDate;
       }
 
       const response = await ordersAPI.list(params);
@@ -77,6 +90,16 @@ const OrderList = () => {
     }
   };
 
+  const handleExportCSV = () => {
+    if (orders.length === 0) {
+      alert('No orders to export');
+      return;
+    }
+
+    const formattedData = formatOrdersForExport(orders);
+    exportToCSV(formattedData, `orders_${currentStore.name}`);
+  };
+
   const getStatusBadgeClass = (status) => {
     const classes = {
       pending: 'bg-yellow-100 text-yellow-800',
@@ -103,35 +126,73 @@ const OrderList = () => {
           <h1 className="text-2xl font-bold text-gray-900">Orders</h1>
           <p className="text-sm text-gray-600 mt-1">Manage customer orders and track sales</p>
         </div>
-        <Button onClick={() => setShowCreateModal(true)}>
-          Create Order
-        </Button>
+        <div className="flex space-x-3">
+          <Button variant="outline" onClick={handleExportCSV}>
+            Export CSV
+          </Button>
+          <Button onClick={() => setShowCreateModal(true)}>
+            Create Order
+          </Button>
+        </div>
       </div>
 
       {/* Filters */}
       <div className="bg-white shadow rounded-lg p-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Search */}
-          <input
-            type="text"
-            placeholder="Search by order number or customer name..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Search */}
+            <input
+              type="text"
+              placeholder="Search by order number or customer name..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
 
-          {/* Status filter */}
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="all">All Statuses</option>
-            <option value="pending">Pending</option>
-            <option value="processing">Processing</option>
-            <option value="completed">Completed</option>
-            <option value="cancelled">Cancelled</option>
-          </select>
+            {/* Status filter */}
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="all">All Statuses</option>
+              <option value="pending">Pending</option>
+              <option value="processing">Processing</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="md:col-span-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1">From Date</label>
+              <input
+                type="date"
+                value={dateRange.startDate}
+                onChange={(e) => setDateRange(prev => ({ ...prev, startDate: e.target.value }))}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <div className="md:col-span-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1">To Date</label>
+              <input
+                type="date"
+                value={dateRange.endDate}
+                onChange={(e) => setDateRange(prev => ({ ...prev, endDate: e.target.value }))}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <div className="md:col-span-1 flex items-end">
+              <button
+                onClick={() => setDateRange({ startDate: '', endDate: '' })}
+                className="w-full px-4 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+              >
+                Clear Dates
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 

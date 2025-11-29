@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useStore } from '../../context/StoreContext';
 import { customersAPI } from '../../utils/api';
 import { formatCurrency, formatDate } from '../../utils/helpers';
+import { exportToCSV, formatCustomersForExport } from '../../utils/exportHelpers';
 import Button from '../common/Button';
 import Modal from '../common/Modal';
 import CustomerForm from './CustomerForm';
@@ -71,6 +72,16 @@ const CustomerList = () => {
     }
   };
 
+  const handleExportCSV = () => {
+    if (customers.length === 0) {
+      alert('No customers to export');
+      return;
+    }
+
+    const formattedData = formatCustomersForExport(customers);
+    exportToCSV(formattedData, `customers_${currentStore.name}`);
+  };
+
   if (!currentStore) {
     return (
       <div className="text-center py-12">
@@ -87,9 +98,14 @@ const CustomerList = () => {
           <h1 className="text-2xl font-bold text-gray-900">Customers</h1>
           <p className="text-sm text-gray-600 mt-1">Manage your customer database and relationships</p>
         </div>
-        <Button onClick={() => setShowAddModal(true)}>
-          Add Customer
-        </Button>
+        <div className="flex space-x-3">
+          <Button variant="outline" onClick={handleExportCSV}>
+            Export CSV
+          </Button>
+          <Button onClick={() => setShowAddModal(true)}>
+            Add Customer
+          </Button>
+        </div>
       </div>
 
       {/* Search */}
