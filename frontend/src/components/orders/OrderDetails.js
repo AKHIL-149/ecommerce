@@ -50,6 +50,53 @@ const OrderDetails = ({ order: initialOrder, onStatusUpdate, onClose }) => {
     return classes[status] || 'bg-gray-100 text-gray-800';
   };
 
+  const getStatusTimeline = () => {
+    const statuses = ['pending', 'processing', 'completed'];
+    const currentStatusIndex = statuses.indexOf(order.status);
+    const isCancelled = order.status === 'cancelled';
+
+    if (isCancelled) {
+      return (
+        <div className="flex items-center justify-center p-4 bg-red-50 rounded-lg">
+          <span className="text-red-600 font-medium">❌ Order Cancelled</span>
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex items-center justify-between">
+        {statuses.map((status, index) => {
+          const isCompleted = index <= currentStatusIndex;
+          const isCurrent = index === currentStatusIndex;
+
+          return (
+            <React.Fragment key={status}>
+              <div className="flex flex-col items-center flex-1">
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center border-2 ${
+                  isCompleted
+                    ? 'bg-blue-500 border-blue-500 text-white'
+                    : 'bg-white border-gray-300 text-gray-400'
+                }`}>
+                  {isCompleted ? '✓' : index + 1}
+                </div>
+                <div className={`mt-2 text-xs font-medium ${
+                  isCurrent ? 'text-blue-600' : isCompleted ? 'text-gray-900' : 'text-gray-400'
+                }`}>
+                  {status.charAt(0).toUpperCase() + status.slice(1)}
+                </div>
+              </div>
+              {index < statuses.length - 1 && (
+                <div className={`h-0.5 flex-1 mx-2 ${
+                  index < currentStatusIndex ? 'bg-blue-500' : 'bg-gray-300'
+                }`} />
+              )}
+            </React.Fragment>
+          );
+        })}
+      </div>
+    );
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -165,6 +212,14 @@ const OrderDetails = ({ order: initialOrder, onStatusUpdate, onClose }) => {
           </div>
         </div>
       )}
+
+      {/* Order Status Timeline */}
+      <div className="border-t pt-4">
+        <h3 className="text-lg font-medium text-gray-900 mb-4">Order Timeline</h3>
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          {getStatusTimeline()}
+        </div>
+      </div>
 
       {/* Status Update Actions */}
       <div className="border-t pt-4">

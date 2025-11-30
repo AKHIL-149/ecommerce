@@ -19,6 +19,34 @@
 - **Docker Ready** - One-command deployment with Docker Compose
 - **API-First** - Complete REST API for integrations and future expansions
 
+## 🎓 Demo & Learning Resources
+
+**NEW!** We provide comprehensive demo materials using the Superstore Sales dataset to help new owners learn the platform:
+
+### Demo Package Includes:
+- 📖 **[DEMO_GUIDE.md](DEMO_GUIDE.md)** - Complete walkthrough using real Superstore data
+- 🐍 **import_demo_data.py** - Automated script to generate demo CSV files
+- 📊 **Demo CSV Files** (generated automatically):
+  - `demo_categories.csv` - 3 product categories (Furniture, Office Supplies, Technology)
+  - `demo_products.csv` - 100 sample products with realistic pricing
+  - `demo_customers.csv` - 100 customers with purchase history
+  - `demo_orders.csv` - 54 orders with various statuses
+
+### Quick Demo Setup:
+```bash
+# 1. Download sample data
+# Place sample_superstore.xls in project root
+
+# 2. Generate demo CSV files
+python import_demo_data.py
+
+# 3. Follow DEMO_GUIDE.md for complete walkthrough
+```
+
+**Use Cases**: Training new staff, testing features, understanding analytics, preparing demonstrations
+
+---
+
 ## Quick Start
 
 ### Prerequisites
@@ -303,15 +331,45 @@ Please ensure your code:
 - Follows the existing code style
 - Includes appropriate error handling
 
+## Recent Enhancements (v1.0 - Complete)
+
+All 14 major enhancements have been successfully implemented:
+
+### Data Export & Filtering (1-4)
+- [x] CSV Export for Orders with date filtering
+- [x] Date Range Filter for Orders
+- [x] CSV Export for Customers
+- [x] CSV Export for Inventory (dual export: stock + adjustments)
+
+### Category System (5-8)
+- [x] Product Categories Backend (full CRUD)
+- [x] Category Management UI with color picker
+- [x] Category Filtering in Products
+- [x] Dashboard Analytics Charts (Recharts integration)
+
+### Enhanced UX (9-11)
+- [x] Low Stock Visual Indicators (red/yellow/green badges)
+- [x] Customer Purchase History View with statistics
+- [x] Order Status Timeline (visual stepper)
+
+### Advanced Features (12-14)
+- [x] Product Image Upload & Preview (base64, up to 5MB)
+- [x] Bulk Product Operations (multi-select, delete, categorize, export)
+- [x] Advanced Category-Based Analytics (pie chart, filtering)
+
+**Status**: Production Ready ✅
+**Documentation**: See [USER_GUIDE.md](USER_GUIDE.md) and [FINAL_ENHANCEMENTS_REPORT.md](FINAL_ENHANCEMENTS_REPORT.md)
+
 ## Roadmap
 
-### Phase 1 (Current)
+### Phase 1 (Completed ✅)
 - [x] Product management with variants
 - [x] Manual order entry
 - [x] Customer tracking
 - [x] Inventory management
 - [x] Basic reporting
 - [x] Multi-tenant support
+- [x] **14 Major Enhancements** (see above)
 
 ### Phase 2 (Future)
 - [ ] Customer-facing online store
@@ -321,6 +379,54 @@ Please ensure your code:
 - [ ] Barcode/QR code support
 - [ ] Advanced reporting and analytics
 - [ ] Mobile app
+
+## Similar Open-Source Projects
+
+If you're evaluating inventory management systems, here are excellent open-source alternatives with great documentation:
+
+### 1. [InvenTree](https://github.com/inventree/InvenTree)
+**Best for**: Parts and component tracking
+- Python/Django backend with REST API
+- Comprehensive documentation at https://docs.inventree.org/
+- Active community support
+- Focus: Low-level stock control and part tracking
+
+### 2. [ERPNext](https://frappe.io/erpnext/open-source-inventory-management-system)
+**Best for**: Full ERP with inventory module
+- Python-based with real-time tracking
+- Multi-warehouse support
+- Extensive integration options
+- Documentation: https://docs.erpnext.com/
+
+### 3. [Odoo Inventory](https://www.odoo.com)
+**Best for**: Enterprise-level with CRM integration
+- Modular architecture with accounting and e-commerce integration
+- Real-time visibility and stock tracking
+- 2024 improvements for better inventory management
+
+### 4. [OpenBoxes](https://openboxes.com/)
+**Best for**: Supply chain and warehouse management
+- Full source code access
+- Zero licensing costs
+- Documentation: https://docs.openboxes.com/
+
+### Additional Resources
+- [Best 11 Open Source Inventory Systems 2025](https://www.fynd.com/blog/open-source-inventory-management-software)
+- [8 Best Free & Open Source Systems](https://www.goodfirms.co/inventory-management-software/blog/best-free-open-source-inventory-management-software-systems)
+- [20 Open-source Warehouse Solutions](https://medevel.com/20-warehouse-systems/)
+- [GitHub Inventory Topics](https://github.com/topics/inventory-management-system)
+
+### Why Choose This System?
+
+| Feature | This System | InvenTree | ERPNext | Odoo |
+|---------|-------------|-----------|---------|------|
+| **E-commerce Focus** | ✅ Yes | ❌ No | ⚠️ Partial | ⚠️ Partial |
+| **Quick Setup** | ✅ Docker one-command | ⚠️ Manual | ⚠️ Manual | ⚠️ Manual |
+| **Learning Curve** | ⭐⭐ Easy | ⭐⭐⭐ Medium | ⭐⭐⭐⭐ Steep | ⭐⭐⭐⭐ Steep |
+| **Modern UI** | ✅ React/Tailwind | ✅ Vue.js | ⚠️ Custom | ⚠️ Custom |
+| **Category Analytics** | ✅ Built-in | ❌ No | ✅ Yes | ✅ Yes |
+| **Image Upload** | ✅ Base64 | ✅ Files | ✅ Files | ✅ Files |
+| **Bulk Operations** | ✅ Yes | ⚠️ Limited | ✅ Yes | ✅ Yes |
 
 ## License
 

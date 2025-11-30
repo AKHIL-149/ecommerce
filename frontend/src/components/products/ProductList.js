@@ -21,6 +21,10 @@ const ProductList = () => {
   const [pagination, setPagination] = useState({});
   const [categories, setCategories] = useState([]);
   const [categoryFilter, setCategoryFilter] = useState('');
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [showBulkActions, setShowBulkActions] = useState(false);
+  const [bulkAction, setBulkAction] = useState('');
+  const [bulkCategoryId, setBulkCategoryId] = useState('');
 
   useEffect(() => {
     if (currentStore) {
@@ -105,6 +109,94 @@ const ProductList = () => {
     exportToCSV(formattedData, `products_${currentStore.name}`);
   };
 
+  const getStockStatusColor = (product) => {
+    if (product.inventory_quantity <= 0) {
+      return 'text-red-600 font-bold';
+    } else if (product.inventory_quantity <= product.low_stock_threshold) {
+      return 'text-yellow-600 font-semibold';
+    }
+    return 'text-green-600';
+  };
+
+  const getStockBadge = (product) => {
+    if (product.inventory_quantity <= 0) {
+      return (
+        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800">
+          Out of Stock
+        </span>
+      );
+    } else if (product.inventory_quantity <= product.low_stock_threshold) {
+      return (
+        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800">
+          ⚠️ Low Stock
+        </span>
+      );
+    }
+    return null;
+  };
+
+  const handleSelectProduct = (productId) => {
+    setSelectedProducts(prev => {
+      if (prev.includes(productId)) {
+        return prev.filter(id => id !== productId);
+      } else {
+        return [...prev, productId];
+      }
+    });
+  };
+
+  const handleSelectAll = (e) => {
+    if (e.target.checked) {
+      setSelectedProducts(products.map(p => p.id));
+    } else {
+      setSelectedProducts([]);
+    }
+  };
+
+  const handleBulkAction = async () => {
+    if (!bulkAction) {
+      alert('Please select an action');
+      return;
+    }
+
+    if (selectedProducts.length === 0) {
+      alert('Please select at least one product');
+      return;
+    }
+
+    try {
+      if (bulkAction === 'delete') {
+        if (!window.confirm(`Are you sure you want to delete ${selectedProducts.length} products?`)) {
+          return;
+        }
+        await Promise.all(selectedProducts.map(id => productsAPI.delete(id)));
+        alert(`Successfully deleted ${selectedProducts.length} products`);
+      } else if (bulkAction === 'category') {
+        if (!bulkCategoryId) {
+          alert('Please select a category');
+          return;
+        }
+        await Promise.all(selectedProducts.map(id =>
+          productsAPI.update(id, { category_id: bulkCategoryId })
+        ));
+        alert(`Successfully updated ${selectedProducts.length} products`);
+      } else if (bulkAction === 'export') {
+        const selectedProductsData = products.filter(p => selectedProducts.includes(p.id));
+        const formattedData = formatProductsForExport(selectedProductsData);
+        exportToCSV(formattedData, `selected_products_${currentStore.name}`);
+      }
+
+      setSelectedProducts([]);
+      setBulkAction('');
+      setBulkCategoryId('');
+      setShowBulkActions(false);
+      fetchProducts();
+    } catch (error) {
+      console.error('Error performing bulk action:', error);
+      alert('Failed to perform bulk action');
+    }
+  };
+
   if (!currentStore) {
     return (
       <div className="text-center py-12">
@@ -130,6 +222,61 @@ const ProductList = () => {
           </Button>
         </div>
       </div>
+
+      {/* Bulk Actions Toolbar */}
+      {selectedProducts.length > 0 && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <span className="text-sm font-medium text-blue-900">
+                {selectedProducts.length} product{selectedProducts.length !== 1 ? 's' : ''} selected
+              </span>
+              <button
+                onClick={() => setSelectedProducts([])}
+                className="text-sm text-blue-600 hover:text-blue-800"
+              >
+                Clear selection
+              </button>
+            </div>
+            <div className="flex items-center space-x-3">
+              <select
+                value={bulkAction}
+                onChange={(e) => {
+                  setBulkAction(e.target.value);
+                  if (e.target.value === 'category') {
+                    setShowBulkActions(true);
+                  }
+                }}
+                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Select action...</option>
+                <option value="delete">Delete selected</option>
+                <option value="category">Assign category</option>
+                <option value="export">Export selected</option>
+              </select>
+
+              {bulkAction === 'category' && (
+                <select
+                  value={bulkCategoryId}
+                  onChange={(e) => setBulkCategoryId(e.target.value)}
+                  className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Select category...</option>
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </option>
+                  ))}
+                </select>
+              )}
+
+              <Button onClick={handleBulkAction} size="sm">
+                Apply
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Search and filters */}
       <div className="bg-white shadow rounded-lg p-4">
@@ -177,6 +324,17 @@ const ProductList = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
+                  <th className="px-6 py-3 text-left">
+                    <input
+                      type="checkbox"
+                      checked={selectedProducts.length === products.length && products.length > 0}
+                      onChange={handleSelectAll}
+                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    />
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Image
+                  </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Product
                   </th>
@@ -199,7 +357,28 @@ const ProductList = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {products.map((product) => (
-                  <tr key={product.id} className="hover:bg-gray-50">
+                  <tr key={product.id} className={`hover:bg-gray-50 ${selectedProducts.includes(product.id) ? 'bg-blue-50' : ''}`}>
+                    <td className="px-6 py-4">
+                      <input
+                        type="checkbox"
+                        checked={selectedProducts.includes(product.id)}
+                        onChange={() => handleSelectProduct(product.id)}
+                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      />
+                    </td>
+                    <td className="px-6 py-4">
+                      {product.image_url ? (
+                        <img
+                          src={product.image_url}
+                          alt={product.name}
+                          className="w-12 h-12 object-cover rounded-md border border-gray-200"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 bg-gray-100 rounded-md flex items-center justify-center border border-gray-200">
+                          <span className="text-gray-400 text-xs">No img</span>
+                        </div>
+                      )}
+                    </td>
                     <td className="px-6 py-4">
                       <div>
                         <p className="text-sm font-medium text-gray-900">{product.name}</p>
@@ -215,15 +394,12 @@ const ProductList = () => {
                       {formatCurrency(product.price)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        className={`text-sm font-medium ${
-                          product.inventory_quantity <= product.low_stock_threshold
-                            ? 'text-red-600'
-                            : 'text-gray-900'
-                        }`}
-                      >
-                        {product.inventory_quantity}
-                      </span>
+                      <div className="flex flex-col gap-1">
+                        <span className={`text-sm font-medium ${getStockStatusColor(product)}`}>
+                          {product.inventory_quantity} units
+                        </span>
+                        {getStockBadge(product)}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span

@@ -1,0 +1,101 @@
+customer_id,name,email,phone,address,segment,total_orders,total_spent,last_order_date
+TC-20980,Tamara Chand,tamara.chand@example.com,(508) 555-9468,"Seattle, Washington 98105",Corporate,12,19052.22,2016-11-26
+TA-21385,Tom Ashbrook,tom.ashbrook@example.com,(101) 555-5873,"New York City, New York 10024",Home Office,10,14595.62,2017-10-22
+SC-20095,Sanjit Chand,sanjit.chand@example.com,(538) 555-9494,"Concord, California 94521",Consumer,22,14142.33,2017-01-15
+HW-14935,Helen Wasserman,helen.wasserman@example.com,(703) 555-5395,"San Diego, California 92105",Corporate,20,9300.25,2017-09-04
+PK-19075,Pete Kriz,pete.kriz@example.com,(114) 555-6339,"Madison, Wisconsin 53711",Consumer,25,8646.93,2017-12-21
+RM-19675,Robert Marley,robert.marley@example.com,(834) 555-3277,"Monroe, Louisiana 71203",Home Office,11,5979.1,2017-12-24
+BD-11320,Bill Donatelli,bill.donatelli@example.com,(168) 555-4126,"San Francisco, California 94110",Consumer,19,5718.52,2017-11-27
+RB-19795,Ross Baird,ross.baird@example.com,(198) 555-6831,"Gastonia, North Carolina 28052",Home Office,18,5633.32,2017-11-28
+EP-13915,Emily Phan,emily.phan@example.com,(120) 555-1254,"Chicago, Illinois 60653",Consumer,31,5478.06,2017-12-18
+YC-21895,Yoseph Carroll,yoseph.carroll@example.com,(500) 555-1760,"San Francisco, California 94110",Corporate,8,5454.35,2017-12-26
+MP-18175,Mike Pelletier,mike.pelletier@example.com,(394) 555-5916,"Laguna Niguel, California 92677",Home Office,19,5087.92,2017-12-14
+KL-16555,Kelly Lampkin,kelly.lampkin@example.com,(347) 555-4075,"Colorado Springs, Colorado 80906",Corporate,22,5016.49,2017-12-14
+AH-10210,Alan Hwang,alan.hwang@example.com,(381) 555-7756,"Brentwood, California 94513",Consumer,13,4805.34,2017-12-24
+RA-19915,Russell Applegate,russell.applegate@example.com,(206) 555-8921,"Houston, Texas 77095",Consumer,22,4793.54,2017-12-18
+RB-19465,Rick Bensley,rick.bensley@example.com,(103) 555-9951,"Chicago, Illinois 60610",Home Office,23,4715.47,2017-12-21
+SC-20050,Sample Company A,sample.company.a@example.com,(249) 555-6201,"Norwich, Connecticut 6360",Home Office,15,4624.57,2017-11-20
+DK-12895,Dana Kaydos,dana.kaydos@example.com,(565) 555-2483,"Kenosha, Wisconsin 53142",Consumer,15,4282.18,2017-11-15
+TC-21295,Toby Carlisle,toby.carlisle@example.com,(868) 555-3016,"San Diego, California 92024",Consumer,16,4266.81,2017-12-03
+AS-10225,Alan Schoenberger,alan.schoenberger@example.com,(536) 555-2522,"New York City, New York 10024",Corporate,13,4260.78,2017-12-08
+FP-14320,Frank Preis,frank.preis@example.com,(517) 555-9251,"Los Angeles, California 90008",Consumer,14,4046.75,2017-12-07
+KH-16630,Ken Heidel,ken.heidel@example.com,(648) 555-7542,"San Antonio, Texas 78207",Corporate,17,3918.97,2017-11-02
+RA-19885,Ruben Ausman,ruben.ausman@example.com,(223) 555-4824,"Los Angeles, California 90049",Corporate,15,3832.31,2017-11-17
+CA-11965,Carol Adams,carol.adams@example.com,(534) 555-7339,"Hoover, Alabama 35244",Corporate,10,3789.72,2017-09-25
+PW-19030,Pauline Webber,pauline.webber@example.com,(758) 555-2729,"Richmond, Kentucky 40475",Corporate,13,3454.92,2017-11-14
+SG-20080,Sandra Glassco,sandra.glassco@example.com,(464) 555-7677,"Independence, Missouri 64055",Consumer,11,3406.58,2017-12-22
+DC-12850,Dan Campbell,dan.campbell@example.com,(871) 555-9453,"Florence, Alabama 35630",Consumer,18,3336.17,2017-11-23
+DK-12835,Damala Kotsonis,damala.kotsonis@example.com,(901) 555-9062,"Salinas, California 93905",Corporate,27,3256.48,2017-12-09
+LC-16960,Lindsay Castell,lindsay.castell@example.com,(925) 555-3379,"Arlington, Virginia 22204",Home Office,7,3246.63,2016-10-20
+EB-13750,Edward Becker,edward.becker@example.com,(152) 555-1625,"Seattle, Washington 98103",Corporate,20,3236.31,2017-11-25
+MP-17470,Mark Packer,mark.packer@example.com,(901) 555-6893,"New York City, New York 10035",Home Office,14,3206.13,2016-01-11
+RD-19900,Ruben Dartt,ruben.dartt@example.com,(135) 555-4075,"Carlsbad, New Mexico 88220",Consumer,21,3133.92,2017-09-07
+TN-21040,Tanja Norvell,tanja.norvell@example.com,(229) 555-4505,"Phoenix, Arizona 85023",Home Office,12,3130.22,2017-10-01
+SG-20605,Speros Goranitis,speros.goranitis@example.com,(453) 555-7811,"New York City, New York 10009",Consumer,13,3124.83,2017-09-13
+KH-16360,Katherine Hughes,katherine.hughes@example.com,(545) 555-6788,"Philadelphia, Pennsylvania 19143",Consumer,14,3100.61,2017-12-29
+KT-16465,Kean Takahito,kean.takahito@example.com,(846) 555-9157,"Los Angeles, California 90049",Consumer,14,3057.1,2016-12-04
+SS-20410,Shahid Shariari,shahid.shariari@example.com,(725) 555-4801,"Los Angeles, California 90008",Consumer,12,3056.81,2017-09-11
+MH-18025,Michelle Huthwaite,michelle.huthwaite@example.com,(798) 555-6155,"Seattle, Washington 98115",Consumer,10,2984.95,2017-11-11
+TH-21115,Thea Hudgings,thea.hudgings@example.com,(850) 555-4948,"Philadelphia, Pennsylvania 19140",Corporate,9,2942.77,2017-11-02
+BC-11125,Becky Castell,becky.castell@example.com,(274) 555-2075,"Peoria, Arizona 85345",Home Office,18,2933.68,2017-06-11
+MT-17815,Meg Tillman,meg.tillman@example.com,(954) 555-3661,"Scottsdale, Arizona 85254",Consumer,10,2890.14,2017-11-11
+CC-12685,Craig Carroll,craig.carroll@example.com,(592) 555-8049,"Greensboro, North Carolina 27405",Consumer,12,2854.12,2015-10-23
+JL-15850,John Lucas,john.lucas@example.com,(136) 555-3430,"Philadelphia, Pennsylvania 19134",Consumer,11,2725.26,2016-04-25
+BO-11350,Bill Overfelt,bill.overfelt@example.com,(108) 555-1844,"Los Angeles, California 90045",Corporate,12,2682.73,2017-08-15
+NS-18505,Neola Schneider,neola.schneider@example.com,(341) 555-8019,"Dallas, Texas 75217",Consumer,15,2575.86,2017-12-24
+DJ-13510,Don Jones,don.jones@example.com,(748) 555-3612,"Murfreesboro, Tennessee 37130",Corporate,13,2501.69,2017-11-12
+MA-17995,Michelle Arnett,michelle.arnett@example.com,(709) 555-7441,"Watertown, New York 13601",Home Office,12,2453.28,2017-06-27
+XP-21865,Xylona Preis,xylona.preis@example.com,(685) 555-2148,"San Diego, California 92024",Consumer,28,2374.66,2017-11-17
+JF-15415,Jennifer Ferguson,jennifer.ferguson@example.com,(498) 555-1143,"New York City, New York 10024",Consumer,14,2371.45,2017-12-28
+TG-21640,Trudy Glocke,trudy.glocke@example.com,(297) 555-7177,"Long Beach, California 90805",Consumer,10,2074.66,2017-09-07
+ML-17755,Max Ludwig,max.ludwig@example.com,(286) 555-9463,"Suffolk, Virginia 23434",Home Office,13,2071.91,2017-12-01
+LD-17005,Lisa DeCherney,lisa.decherney@example.com,(765) 555-7588,"San Francisco, California 94109",Consumer,7,1961.93,2016-11-11
+TP-21565,Tracy Poddar,tracy.poddar@example.com,(597) 555-1867,"Aurora, Colorado 80013",Corporate,10,1936.64,2017-01-14
+BG-11695,Brooke Gillingham,brooke.gillingham@example.com,(104) 555-1333,"Cincinnati, Ohio 45231",Corporate,8,1874.17,2017-11-24
+PC-18745,Pamela Coakley,pamela.coakley@example.com,(604) 555-7407,"San Francisco, California 94122",Corporate,5,1832.06,2017-12-28
+JB-15400,Jennifer Braxton,jennifer.braxton@example.com,(201) 555-2633,"Chicago, Illinois 60623",Corporate,16,1791.6,2017-12-23
+DS-13030,Darrin Sayre,darrin.sayre@example.com,(909) 555-5237,"Seattle, Washington 98115",Home Office,19,1762.21,2017-09-28
+BE-11455,Brad Eason,brad.eason@example.com,(767) 555-2069,"Olathe, Kansas 66062",Home Office,13,1727.65,2017-04-20
+MO-17800,Meg O'Connel,meg.o'connel@example.com,(671) 555-4772,"New York City, New York 10009",Home Office,11,1687.03,2017-09-17
+AZ-10750,Annie Zypern,annie.zypern@example.com,(753) 555-7901,"New York City, New York 10009",Consumer,12,1622.02,2017-07-23
+CR-12730,Craig Reiter,craig.reiter@example.com,(862) 555-9299,"Columbus, Ohio 43229",Consumer,6,1600.55,2017-10-13
+AH-10195,Alan Haines,alan.haines@example.com,(136) 555-7494,"Tamarac, Florida 33319",Corporate,8,1587.45,2017-11-05
+GB-14530,George Bell,george.bell@example.com,(558) 555-4962,"Auburn, New York 13021",Corporate,20,1568.44,2017-10-29
+PN-18775,Parhena Norris,parhena.norris@example.com,(600) 555-5004,"New York City, New York 10009",Home Office,13,1467.15,2017-11-30
+AG-10525,Andy Gerbode,andy.gerbode@example.com,(213) 555-3218,"Saint Petersburg, Florida 33710",Corporate,9,1455.04,2015-09-07
+RD-19720,Roger Demir,roger.demir@example.com,(691) 555-3114,"Daytona Beach, Florida 32114",Consumer,20,1419.74,2017-12-09
+PM-18940,Paul MacIntyre,paul.macintyre@example.com,(980) 555-4974,"Jackson, Michigan 49201",Consumer,4,1405.4,2016-12-09
+TB-21595,Troy Blackwell,troy.blackwell@example.com,(926) 555-2274,"Columbus, Indiana 47201",Consumer,7,1387.56,2017-03-20
+GH-14485,Gene Hale,gene.hale@example.com,(887) 555-2179,"Richardson, Texas 75080",Corporate,3,1361.24,2016-12-08
+SS-20140,Saphhira Shifley,saphhira.shifley@example.com,(965) 555-9967,"Warwick, Rhode Island 2886",Corporate,21,1324.03,2017-12-15
+SP-20545,Sibella Parks,sibella.parks@example.com,(459) 555-6573,"New York City, New York 10011",Corporate,10,1306.09,2017-02-06
+DB-13660,Duane Benoit,duane.benoit@example.com,(819) 555-2674,"Oceanside, New York 11572",Consumer,10,1155.2,2017-12-18
+DW-13195,David Wiener,david.wiener@example.com,(678) 555-5785,"Houston, Texas 77095",Corporate,9,1080.75,2017-10-22
+PO-19195,Phillina Ober,phillina.ober@example.com,(657) 555-4764,"Naperville, Illinois 60540",Home Office,10,1056.86,2017-10-05
+MK-18160,Mike Kennedy,mike.kennedy@example.com,(974) 555-8990,"Jacksonville, Florida 32216",Consumer,11,1031.6,2017-05-04
+RD-19930,Russell D'Ascenzo,russell.d'ascenzo@example.com,(194) 555-9111,"Austin, Texas 78745",Consumer,10,970.94,2017-11-18
+BS-11800,Bryan Spruell,bryan.spruell@example.com,(515) 555-9463,"New York City, New York 10011",Home Office,8,949.43,2017-04-09
+EB-13930,Eric Barreto,eric.barreto@example.com,(518) 555-9218,"San Francisco, California 94110",Consumer,7,944.6,2017-07-22
+MO-17500,Mary O'Rourke,mary.o'rourke@example.com,(941) 555-6163,"New York City, New York 10035",Consumer,5,922.49,2017-10-19
+HZ-14950,Henia Zydlo,henia.zydlo@example.com,(374) 555-7232,"Columbus, Ohio 43229",Consumer,6,886.52,2017-11-25
+RE-19450,Richard Eichhorn,richard.eichhorn@example.com,(850) 555-2224,"Dallas, Texas 75081",Consumer,9,876.7,2017-03-03
+LP-17080,Liz Pelletier,liz.pelletier@example.com,(825) 555-5245,"San Francisco, California 94110",Consumer,9,756.61,2017-11-20
+IG-15085,Ivan Gibson,ivan.gibson@example.com,(453) 555-6157,"San Diego, California 92024",Consumer,7,744.57,2017-10-20
+ML-18040,Michelle Lonsdale,michelle.lonsdale@example.com,(916) 555-4906,"Albuquerque, New Mexico 87105",Corporate,4,742.08,2017-10-12
+AH-10585,Angele Hood,angele.hood@example.com,(135) 555-2933,"Chicago, Illinois 60623",Consumer,5,738.5,2017-12-09
+HM-14980,Henry MacAllister,henry.macallister@example.com,(292) 555-6092,"New York City, New York 10009",Consumer,7,736.28,2017-04-27
+PB-19105,Peter Bühler,peter.bühler@example.com,(540) 555-8927,"Evanston, Illinois 60201",Consumer,5,688.32,2017-11-03
+JB-16000,Joy Bell-,joy.bell-@example.com,(743) 555-4570,"Brownsville, Texas 78521",Consumer,7,644.12,2017-11-17
+AJ-10960,Astrea Jones,astrea.jones@example.com,(367) 555-3795,"Rochester, New York 14609",Consumer,5,629.25,2017-10-17
+RR-19315,Ralph Ritter,ralph.ritter@example.com,(491) 555-2188,"San Francisco, California 94110",Consumer,4,615.93,2017-12-11
+BF-10975,Barbara Fisher,barbara.fisher@example.com,(995) 555-7920,"Charlotte, North Carolina 28205",Corporate,13,599.8,2017-09-30
+BD-11635,Brian Derr,brian.derr@example.com,(405) 555-1595,"Bowling Green, Kentucky 42104",Consumer,5,582.65,2017-12-21
+RB-19570,Rob Beeghly,rob.beeghly@example.com,(222) 555-8068,"Columbus, Indiana 47201",Consumer,9,528.55,2017-12-05
+EC-14050,Erin Creighton,erin.creighton@example.com,(915) 555-2544,"New York City, New York 10024",Consumer,7,461.91,2017-11-07
+VG-21805,Vivek Grady,vivek.grady@example.com,(143) 555-3161,"Virginia Beach, Virginia 23464",Corporate,6,427.37,2017-03-19
+JD-16015,Joy Daniels,joy.daniels@example.com,(614) 555-1440,"Chicago, Illinois 60610",Consumer,11,385.43,2017-09-09
+ML-18265,Muhammed Lee,muhammed.lee@example.com,(472) 555-9819,"Seattle, Washington 98103",Consumer,3,162.23,2017-09-21
+MO-17950,Michael Oakman,michael.oakman@example.com,(233) 555-1661,"Dallas, Texas 75220",Consumer,4,154.29,2017-07-03
+AR-10570,Anemone Ratner,anemone.ratner@example.com,(998) 555-4293,"Columbus, Georgia 31907",Consumer,2,88.15,2016-07-14
+RS-19870,Roy Skaria,roy.skaria@example.com,(132) 555-1794,"Burlington, Iowa 52601",Home Office,3,22.33,2017-12-11
+LD-16855,Lela Donovan,lela.donovan@example.com,(606) 555-8461,"Chicago, Illinois 60653",Corporate,1,5.3,2016-06-26

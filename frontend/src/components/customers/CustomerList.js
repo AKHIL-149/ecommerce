@@ -9,6 +9,7 @@ import { exportToCSV, formatCustomersForExport } from '../../utils/exportHelpers
 import Button from '../common/Button';
 import Modal from '../common/Modal';
 import CustomerForm from './CustomerForm';
+import CustomerOrderHistory from './CustomerOrderHistory';
 
 const CustomerList = () => {
   const { currentStore } = useStore();
@@ -19,6 +20,8 @@ const CustomerList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState({});
+  const [showOrderHistoryModal, setShowOrderHistoryModal] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
 
   useEffect(() => {
     if (currentStore) {
@@ -80,6 +83,11 @@ const CustomerList = () => {
 
     const formattedData = formatCustomersForExport(customers);
     exportToCSV(formattedData, `customers_${currentStore.name}`);
+  };
+
+  const handleViewOrders = (customer) => {
+    setSelectedCustomer(customer);
+    setShowOrderHistoryModal(true);
   };
 
   if (!currentStore) {
@@ -189,6 +197,12 @@ const CustomerList = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
                       <button
+                        onClick={() => handleViewOrders(customer)}
+                        className="text-green-600 hover:text-green-900"
+                      >
+                        Orders
+                      </button>
+                      <button
                         onClick={() => handleEdit(customer)}
                         className="text-blue-600 hover:text-blue-900"
                       >
@@ -254,6 +268,27 @@ const CustomerList = () => {
             setEditingCustomer(null);
           }}
         />
+      </Modal>
+
+      {/* Order History Modal */}
+      <Modal
+        isOpen={showOrderHistoryModal}
+        onClose={() => {
+          setShowOrderHistoryModal(false);
+          setSelectedCustomer(null);
+        }}
+        title="Customer Purchase History"
+        size="lg"
+      >
+        {selectedCustomer && (
+          <CustomerOrderHistory
+            customer={selectedCustomer}
+            onClose={() => {
+              setShowOrderHistoryModal(false);
+              setSelectedCustomer(null);
+            }}
+          />
+        )}
       </Modal>
     </div>
   );

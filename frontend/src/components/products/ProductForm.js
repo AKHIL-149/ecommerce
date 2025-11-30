@@ -23,8 +23,11 @@ const ProductForm = ({ product, onSuccess, onCancel }) => {
     category_id: '',
     inventory_quantity: '',
     low_stock_threshold: '10',
-    status: 'active'
+    status: 'active',
+    image_url: ''
   });
+
+  const [imagePreview, setImagePreview] = useState(null);
 
   // Fetch categories when component mounts
   useEffect(() => {
@@ -54,8 +57,14 @@ const ProductForm = ({ product, onSuccess, onCancel }) => {
         category_id: product.category_id || '',
         inventory_quantity: product.inventory_quantity || '',
         low_stock_threshold: product.low_stock_threshold || '10',
-        status: product.status || 'active'
+        status: product.status || 'active',
+        image_url: product.image_url || ''
       });
+
+      // Set image preview if product has an image
+      if (product.image_url) {
+        setImagePreview(product.image_url);
+      }
     }
   }, [product]);
 
@@ -73,6 +82,43 @@ const ProductForm = ({ product, onSuccess, onCancel }) => {
         [name]: ''
       }));
     }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        alert('Please select an image file');
+        return;
+      }
+
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Image size must be less than 5MB');
+        return;
+      }
+
+      // Create preview and convert to base64
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result;
+        setImagePreview(base64String);
+        setFormData(prev => ({
+          ...prev,
+          image_url: base64String
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setImagePreview(null);
+    setFormData(prev => ({
+      ...prev,
+      image_url: ''
+    }));
   };
 
   const validateForm = () => {
@@ -159,6 +205,56 @@ const ProductForm = ({ product, onSuccess, onCancel }) => {
         error={errors.name}
         required
       />
+
+      {/* Product Image Upload */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Product Image
+        </label>
+        <div className="flex items-start space-x-4">
+          {/* Image Preview */}
+          {imagePreview ? (
+            <div className="relative">
+              <img
+                src={imagePreview}
+                alt="Product preview"
+                className="w-32 h-32 object-cover rounded-lg border-2 border-gray-300"
+              />
+              <button
+                type="button"
+                onClick={handleRemoveImage}
+                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 transition-colors"
+              >
+                ×
+              </button>
+            </div>
+          ) : (
+            <div className="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50">
+              <span className="text-gray-400 text-sm">No image</span>
+            </div>
+          )}
+
+          {/* Upload Button */}
+          <div className="flex-1">
+            <input
+              type="file"
+              id="image-upload"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="hidden"
+            />
+            <label
+              htmlFor="image-upload"
+              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer transition-colors"
+            >
+              {imagePreview ? 'Change Image' : 'Upload Image'}
+            </label>
+            <p className="mt-2 text-xs text-gray-500">
+              PNG, JPG, GIF up to 5MB
+            </p>
+          </div>
+        </div>
+      </div>
 
       {/* SKU and Category in a row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

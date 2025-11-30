@@ -1,0 +1,55 @@
+order_id,customer_id,customer_name,order_date,ship_date,ship_mode,product_id,product_name,category,quantity,price_per_unit,total_amount,discount,profit,status
+US-2017-158526,KH-16360,Katherine Hughes,2017-12-29,2018-01-01,Second Class,FUR-CH-10001270,Harbour Creations Steel Folding Chair,Furniture,3,86.25,258.75,0.0,77.62,processing
+CA-2017-169859,MP-18175,Mike Pelletier,2017-12-14,2017-12-18,Standard Class,FUR-FU-10004963,"Eldon 400 Class Desk Accessories, Black Carbon",Furniture,3,8.75,26.25,0.0,11.03,processing
+CA-2017-136875,TC-21295,Toby Carlisle,2017-12-03,2017-12-03,Same Day,OFF-PA-10000357,Xerox 1888,Office Supplies,3,55.48,166.44,0.0,79.89,completed
+CA-2017-168179,JB-16000,Joy Bell-,2017-11-02,2017-11-07,Standard Class,OFF-PA-10001800,Xerox 220,Office Supplies,3,6.48,19.44,0.0,9.33,completed
+CA-2017-127180,TA-21385,Tom Ashbrook,2017-10-22,2017-10-24,First Class,OFF-EN-10002500,Globe Weis Peel & Seel First Class Envelopes,Office Supplies,5,12.78,63.9,0.0,28.75,completed
+CA-2017-127180,TA-21385,Tom Ashbrook,2017-10-22,2017-10-24,First Class,TEC-CO-10004722,Canon imageCLASS 2200 Advanced Copier,Technology,4,2799.99,11199.97,0.2,3919.99,processing
+CA-2017-131016,DC-12850,Dan Campbell,2017-09-18,2017-09-20,First Class,OFF-AR-10000122,Newell 314,Office Supplies,2,4.46,8.93,0.2,0.56,pending
+CA-2017-152198,JD-16015,Joy Daniels,2017-09-09,2017-09-10,First Class,OFF-LA-10000443,Avery 501,Office Supplies,6,2.95,17.71,0.2,5.98,completed
+US-2017-102183,PK-19075,Pete Kriz,2017-08-21,2017-08-28,Standard Class,OFF-BI-10001359,GBC DocuBind TL300 Electric Binding System,Office Supplies,6,717.59,4305.55,0.2,1453.12,completed
+CA-2017-128363,DC-12850,Dan Campbell,2017-08-13,2017-08-18,Standard Class,OFF-BI-10001359,GBC DocuBind TL300 Electric Binding System,Office Supplies,6,269.1,1614.58,0.7,-1237.85,pending
+CA-2017-161102,EC-14050,Erin Creighton,2017-07-31,2017-08-03,First Class,FUR-FU-10003142,"Master Big Foot Doorstop, Beige",Furniture,7,5.28,36.96,0.0,11.46,pending
+CA-2017-113530,BC-11125,Becky Castell,2017-05-19,2017-05-21,Second Class,OFF-AR-10000122,Newell 314,Office Supplies,1,5.58,5.58,0.0,1.39,completed
+CA-2017-163209,MK-18160,Mike Kennedy,2017-05-03,2017-05-07,Standard Class,OFF-PA-10001166,Xerox 2,Office Supplies,4,6.48,25.92,0.0,12.44,completed
+US-2017-166324,BE-11455,Brad Eason,2017-04-20,2017-04-21,First Class,TEC-PH-10004080,Avaya 5410 Digital phone,Technology,3,40.79,122.38,0.4,-24.48,completed
+CA-2017-135279,BS-11800,Bryan Spruell,2017-04-09,2017-04-11,First Class,OFF-LA-10001613,Avery File Folder Labels,Office Supplies,3,2.88,8.64,0.0,4.23,completed
+US-2017-106131,TP-21565,Tracy Poddar,2017-01-14,2017-01-16,First Class,TEC-AC-10003027,Imation 8GB Mini TravelDrive USB 2.0 Flash Drive,Technology,7,24.15,169.06,0.2,-14.79,completed
+CA-2016-101168,SS-20140,Saphhira Shifley,2016-12-25,2017-01-01,Standard Class,FUR-FU-10003142,"Master Big Foot Doorstop, Beige",Furniture,4,5.28,21.12,0.0,6.55,completed
+CA-2016-102092,PM-18940,Paul MacIntyre,2016-12-09,2016-12-11,First Class,FUR-TA-10002530,"Iceberg OfficeWorks 42"" Round Tables",Furniture,7,150.98,1056.86,0.0,158.53,processing
+CA-2016-112060,KT-16465,Kean Takahito,2016-12-04,2016-12-09,Standard Class,OFF-PA-10000994,Xerox 1915,Office Supplies,1,104.85,104.85,0.0,50.33,processing
+CA-2016-159639,PC-18745,Pamela Coakley,2016-11-27,2016-12-02,Standard Class,FUR-FU-10001889,Ultra Door Pull Handle,Furniture,3,10.52,31.56,0.0,10.41,completed
+US-2016-165078,MA-17995,Michelle Arnett,2016-11-05,2016-11-10,Standard Class,OFF-LA-10000414,Avery 503,Office Supplies,5,10.35,51.75,0.0,24.84,completed
+CA-2016-109365,XP-21865,Xylona Preis,2016-11-03,2016-11-08,Standard Class,OFF-PA-10004359,Multicolor Computer Printout Paper,Office Supplies,3,104.85,314.55,0.0,150.98,completed
+CA-2016-119165,BD-11320,Bill Donatelli,2016-10-31,2016-11-06,Standard Class,FUR-CH-10000988,Hon Olson Stacker Stools,Furniture,5,98.57,492.84,0.3,-14.08,completed
+CA-2016-118689,TC-20980,Tamara Chand,2016-10-02,2016-10-09,Standard Class,TEC-CO-10004722,Canon imageCLASS 2200 Advanced Copier,Technology,5,3499.99,17499.95,0.0,8399.98,processing
+CA-2016-140774,BE-11455,Brad Eason,2016-09-05,2016-09-10,Standard Class,OFF-AR-10004022,Panasonic KP-380BK Classic Electric Pencil Sharpener,Office Supplies,3,35.98,107.94,0.0,26.98,completed
+CA-2016-140256,PW-19030,Pauline Webber,2016-08-22,2016-08-29,Standard Class,OFF-AR-10002255,Newell 346,Office Supplies,2,2.88,5.76,0.0,1.67,completed
+US-2016-146066,RB-19465,Rick Bensley,2016-08-21,2016-08-23,Second Class,FUR-TA-10002530,"Iceberg OfficeWorks 42"" Round Tables",Furniture,9,90.59,815.29,0.4,-339.71,pending
+CA-2016-109869,TN-21040,Tanja Norvell,2016-04-22,2016-04-29,Standard Class,FUR-TA-10001889,Bush Advantage Collection Racetrack Conference Table,Furniture,6,212.1,1272.63,0.5,-814.48,processing
+CA-2016-111213,FP-14320,Frank Preis,2016-04-01,2016-04-05,Standard Class,OFF-BI-10004140,Avery Non-Stick Binders,Office Supplies,1,3.59,3.59,0.2,1.12,completed
+CA-2016-111213,FP-14320,Frank Preis,2016-04-01,2016-04-05,Standard Class,OFF-SU-10000946,Staple remover,Office Supplies,8,7.98,63.84,0.0,18.51,pending
+CA-2016-166485,AH-10210,Alan Hwang,2016-02-20,2016-02-27,Standard Class,OFF-PA-10004996,"Speediset Carbonless Redi-Letter 7"" x 8 1/2""",Office Supplies,2,8.25,16.5,0.2,5.57,completed
+CA-2015-127502,MT-17815,Meg Tillman,2015-12-10,2015-12-14,Standard Class,OFF-LA-10001613,Avery File Folder Labels,Office Supplies,2,2.88,5.76,0.0,2.82,completed
+CA-2015-110814,BD-11635,Brian Derr,2015-12-05,2015-12-09,Second Class,OFF-PA-10004156,Xerox 188,Office Supplies,2,11.34,22.68,0.0,11.11,processing
+CA-2015-147851,MP-17470,Mark Packer,2015-12-03,2015-12-08,Standard Class,OFF-BI-10004528,Cardinal Poly Pocket Divider Pockets for Ring Binders,Office Supplies,4,2.69,10.75,0.2,3.36,pending
+CA-2015-131422,GB-14530,George Bell,2015-11-05,2015-11-09,Standard Class,FUR-CH-10001270,Harbour Creations Steel Folding Chair,Furniture,3,69.0,207.0,0.2,25.87,completed
+CA-2015-131352,GH-14485,Gene Hale,2015-10-08,2015-10-13,Standard Class,FUR-FU-10003708,"Tenex Traditional Chairmats for Medium Pile Carpet, Standard Lip, 36"" x 48""",Furniture,3,24.26,72.78,0.6,-70.96,completed
+CA-2015-156335,PO-19195,Phillina Ober,2015-09-25,2015-09-28,Second Class,OFF-BI-10003314,Tuff Stuff Recycled Round Ring Binders,Office Supplies,3,4.82,14.46,0.0,7.09,completed
+CA-2015-109575,KH-16630,Ken Heidel,2015-09-18,2015-09-23,Standard Class,TEC-PH-10000895,Polycom VVX 310 VoIP phone,Technology,7,179.99,1259.93,0.0,327.58,pending
+CA-2015-164084,AG-10525,Andy Gerbode,2015-09-07,2015-09-12,Standard Class,OFF-BI-10000605,"Acco Pressboard Covers with Storage Hooks, 9 1/2"" x 11"", Executive Red",Office Supplies,2,3.05,6.1,0.2,2.06,pending
+CA-2015-169572,AG-10525,Andy Gerbode,2015-09-06,2015-09-12,Standard Class,OFF-BI-10002799,"SlimView Poly Binder, 3/8""",Office Supplies,9,5.18,46.62,0.0,21.45,completed
+CA-2015-155453,RA-19885,Ruben Ausman,2015-08-09,2015-08-14,Standard Class,OFF-LA-10001613,Avery File Folder Labels,Office Supplies,2,2.3,4.61,0.2,1.67,pending
+US-2015-150161,RB-19795,Ross Baird,2015-07-25,2015-07-29,Standard Class,OFF-BI-10001524,GBC Premium Transparent Covers with Diagonal Lined Pattern,Office Supplies,4,6.29,25.18,0.7,-18.46,completed
+CA-2015-120880,JL-15850,John Lucas,2015-05-29,2015-06-03,Standard Class,OFF-BI-10002931,"Avery Trapezoid Extra Heavy Duty 4"" Binders",Office Supplies,5,33.55,167.76,0.2,62.91,pending
+US-2015-168704,FP-14320,Frank Preis,2015-04-13,2015-04-17,Standard Class,FUR-TA-10002530,"Iceberg OfficeWorks 42"" Round Tables",Furniture,2,105.69,211.37,0.3,-45.29,processing
+CA-2015-128083,EB-13750,Edward Becker,2015-03-12,2015-03-17,Standard Class,FUR-FU-10001731,Acrylic Self-Standing Desk Frames,Furniture,3,2.14,6.41,0.2,1.44,processing
+CA-2015-119480,CC-12685,Craig Carroll,2015-01-09,2015-01-13,Standard Class,OFF-PA-10004996,"Speediset Carbonless Redi-Letter 7"" x 8 1/2""",Office Supplies,5,10.31,51.55,0.0,24.23,processing
+CA-2014-138128,FP-14320,Frank Preis,2014-12-09,2014-12-15,Standard Class,OFF-EN-10002500,Globe Weis Peel & Seel First Class Envelopes,Office Supplies,3,10.22,30.67,0.2,9.59,processing
+CA-2014-158372,RD-19900,Ruben Dartt,2014-11-10,2014-11-16,Standard Class,OFF-LA-10000407,Avery White Multi-Purpose Labels,Office Supplies,8,4.98,39.84,0.0,18.33,processing
+CA-2014-152268,SC-20095,Sanjit Chand,2014-09-02,2014-09-07,Standard Class,OFF-BI-10001359,GBC DocuBind TL300 Electric Binding System,Office Supplies,2,896.99,1793.98,0.0,843.17,completed
+CA-2014-158281,AG-10525,Andy Gerbode,2014-09-02,2014-09-07,Standard Class,TEC-MA-10002210,Epson TM-T88V Direct Thermal Printer - Monochrome - Desktop,Technology,3,186.57,559.71,0.4,-121.27,processing
+CA-2014-113271,DS-13030,Darrin Sayre,2014-07-09,2014-07-14,Standard Class,OFF-AR-10003251,Prang Drawing Pencil Set,Office Supplies,2,2.78,5.56,0.0,2.22,pending
+CA-2014-159814,LP-17080,Liz Pelletier,2014-06-24,2014-06-28,Standard Class,FUR-FU-10001731,Acrylic Self-Standing Desk Frames,Furniture,2,2.14,4.27,0.2,0.96,processing
+CA-2014-140228,GB-14530,George Bell,2014-04-28,2014-05-03,Standard Class,OFF-LA-10001613,Avery File Folder Labels,Office Supplies,3,2.3,6.91,0.2,2.51,completed
+CA-2014-167927,XP-21865,Xylona Preis,2014-01-20,2014-01-26,Standard Class,OFF-BI-10000605,"Acco Pressboard Covers with Storage Hooks, 9 1/2"" x 11"", Executive Red",Office Supplies,5,3.81,19.05,0.0,8.95,processing

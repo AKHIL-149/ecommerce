@@ -3,10 +3,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell, Legend } from 'recharts';
 import { useStore } from '../../context/StoreContext';
-import { reportsAPI, ordersAPI, productsAPI } from '../../utils/api';
+import { reportsAPI, ordersAPI, productsAPI, categoriesAPI } from '../../utils/api';
 import { formatCurrency, formatDate } from '../../utils/helpers';
+
+const CHART_COLORS = ['#3B82F6', '#10B981', '#8B5CF6', '#F59E0B', '#EF4444', '#EC4899', '#14B8A6', '#F97316'];
 
 const Dashboard = () => {
   const { currentStore } = useStore();
@@ -14,19 +16,37 @@ const Dashboard = () => {
     today: {},
     sales: [],
     topProducts: [],
-    lowStock: []
+    lowStock: [],
+    categoryStats: []
   });
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState({
     startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
     endDate: new Date().toISOString().split('T')[0]
   });
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
     if (currentStore) {
       fetchDashboardData();
     }
-  }, [currentStore, dateRange]);
+  }, [currentStore, dateRange, selectedCategory]);
+
+  useEffect(() => {
+    if (currentStore) {
+      fetchCategories();
+    }
+  }, [currentStore]);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await categoriesAPI.list({ storeId: currentStore.id });
+      setCategories(response.data.categories || []);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
 
   const fetchDashboardData = async () => {
     if (!currentStore) return;
@@ -34,27 +54,34 @@ const Dashboard = () => {
     setLoading(true);
     try {
       // Fetch data from multiple endpoints in parallel
-      const [todayStatsRes, salesRes, productsRes, lowStockRes] = await Promise.all([
+      const params = {
+        storeId: currentStore.id,
+        startDate: dateRange.startDate,
+        endDate: dateRange.endDate
+      };
+
+      if (selectedCategory) {
+        params.categoryId = selectedCategory;
+      }
+
+      const [todayStatsRes, salesRes, productsRes, lowStockRes, categoryStatsRes] = await Promise.all([
         ordersAPI.getTodayStats({ storeId: currentStore.id }),
-        reportsAPI.getSales({
+        reportsAPI.getSales(params),
+        reportsAPI.getProducts({ ...params, limit: 5 }),
+        productsAPI.getLowStock({ storeId: currentStore.id }),
+        reportsAPI.getCategoryStats({
           storeId: currentStore.id,
           startDate: dateRange.startDate,
           endDate: dateRange.endDate
-        }),
-        reportsAPI.getProducts({
-          storeId: currentStore.id,
-          startDate: dateRange.startDate,
-          endDate: dateRange.endDate,
-          limit: 5
-        }),
-        productsAPI.getLowStock({ storeId: currentStore.id })
+        }).catch(() => ({ data: { categories: [] } })) // Gracefully handle if endpoint doesn't exist
       ]);
 
       setStats({
         today: todayStatsRes.data,
         sales: salesRes.data.dailyStats || [],
         topProducts: productsRes.data.products || [],
-        lowStock: lowStockRes.data.products || []
+        lowStock: lowStockRes.data.products || [],
+        categoryStats: categoryStatsRes.data.categories || []
       });
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
@@ -99,25 +126,42 @@ const Dashboard = () => {
   return (
     <div className="space-y-6">
       {/* Header with date range selector */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
           <p className="text-sm text-gray-600 mt-1">Welcome back! Here's what's happening with your store.</p>
         </div>
-        <div className="flex items-center space-x-4">
-          <input
-            type="date"
-            value={dateRange.startDate}
-            onChange={(e) => setDateRange(prev => ({ ...prev, startDate: e.target.value }))}
-            className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <span className="text-gray-500">to</span>
-          <input
-            type="date"
-            value={dateRange.endDate}
-            onChange={(e) => setDateRange(prev => ({ ...prev, endDate: e.target.value }))}
-            className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+          <div className="flex items-center space-x-2">
+            <label className="text-sm font-medium text-gray-700">Category:</label>
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">All Categories</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <input
+              type="date"
+              value={dateRange.startDate}
+              onChange={(e) => setDateRange(prev => ({ ...prev, startDate: e.target.value }))}
+              className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <span className="text-gray-500">to</span>
+            <input
+              type="date"
+              value={dateRange.endDate}
+              onChange={(e) => setDateRange(prev => ({ ...prev, endDate: e.target.value }))}
+              className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
         </div>
       </div>
 
@@ -149,7 +193,9 @@ const Dashboard = () => {
       {/* Sales chart */}
       {stats.sales.length > 0 && (
         <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Sales Trend</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            Sales Trend {selectedCategory && `- ${categories.find(c => c.id == selectedCategory)?.name}`}
+          </h2>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={stats.sales}>
@@ -167,6 +213,75 @@ const Dashboard = () => {
                 <Line type="monotone" dataKey="orders" stroke="#10B981" strokeWidth={2} name="Orders" />
               </LineChart>
             </ResponsiveContainer>
+          </div>
+        </div>
+      )}
+
+      {/* Category Analytics */}
+      {!selectedCategory && stats.categoryStats.length > 0 && (
+        <div className="bg-white rounded-lg shadow p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Sales by Category</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Pie Chart */}
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={stats.categoryStats}
+                    dataKey="revenue"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={100}
+                    label={(entry) => `${entry.name}: ${formatCurrency(entry.revenue)}`}
+                  >
+                    {stats.categoryStats.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip formatter={(value) => formatCurrency(value)} />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Category Stats Table */}
+            <div className="overflow-auto">
+              <table className="min-w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
+                    <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Revenue</th>
+                    <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Orders</th>
+                    <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Products</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {stats.categoryStats.map((cat, index) => (
+                    <tr key={cat.id || cat.name}>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center">
+                          <div
+                            className="w-3 h-3 rounded-full mr-2"
+                            style={{ backgroundColor: CHART_COLORS[index % CHART_COLORS.length] }}
+                          />
+                          <span className="text-sm font-medium text-gray-900">{cat.name || 'Uncategorized'}</span>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 text-right text-sm text-gray-900 font-semibold">
+                        {formatCurrency(cat.revenue || 0)}
+                      </td>
+                      <td className="px-4 py-3 text-right text-sm text-gray-600">
+                        {cat.orders || 0}
+                      </td>
+                      <td className="px-4 py-3 text-right text-sm text-gray-600">
+                        {cat.products || 0}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
